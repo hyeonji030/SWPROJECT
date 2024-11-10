@@ -262,3 +262,6 @@ from sklearn.metrics import confusion_matrix
 
 
 confusion_matrix_img(truey, predy, savename='Confusion Matrix')
+
+
+https://www.kaggle.com/code/bunnyyy/xceptionnet
