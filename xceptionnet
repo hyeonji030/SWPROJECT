@@ -1,3 +1,4 @@
+** 경고 무시 설정 **
 import warnings
 
 #ignore Warnings
@@ -46,6 +47,7 @@ from PIL import Image
 #save train data and model
 import joblib
 
+** 데이터 로딩 및 전처리 **
 data = pd.read_csv('/kaggle/input/fer2013-dataset/fer2013.csv')
 data.head()
 
@@ -76,6 +78,7 @@ print("Number of examples in dataset:"+str(len(X)))
 print("X,y stored in fdataX.npy and flabels.npy respectively")
 
 
+** 이미지 시각화 **
 labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
 import random as rn
@@ -91,6 +94,8 @@ for i in range(1, columns*rows +1):
     plt.imshow(X[angka_random].reshape(48,48), cmap = 'gray')
     plt.title(labels[y[angka_random]])
 plt.show()
+
+** 데이터 전처리 **
 # storing them using numpy
 np.save('fdataX', X)
 np.save('flabels', y)
@@ -103,6 +108,8 @@ for i in range(len(X)):
     X_new.append(stacked_img)
 
 X_new = np.array(X_new)
+
+** 훈련/테스트 데이터셋 분리 **
 x_train, x_test, y_train, y_test = train_test_split(X_new, Y, test_size = 0.2)
 print("Data Train Shape")
 print("X_TRAIN : ", x_train.shape)
@@ -111,6 +118,8 @@ print("Y_TRAIN : ", y_train.shape)
 print("Data Test Shape")
 print("X_TRAIN : ", x_test.shape)
 print("Y_TRAIN : ", y_test.shape)
+
+** Xception 모델 구축 **
 from keras.applications.xception import Xception
 from keras.layers import Activation, Dense,GlobalAveragePooling2D, Dropout
 from keras.models import Model
@@ -169,6 +178,8 @@ datagen = ImageDataGenerator(
 
 
 datagen.fit(x_train)
+
+** 모델 컴파일 및 학습 **
 # Compile the model
 model.compile(optimizer=Adam(lr=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
 
@@ -187,7 +198,7 @@ plt.ylabel('Loss')
 plt.xlabel('Epochs')
 plt.legend(['train', 'test'])
 
-
+** 훈련 결과 시각화 **
 plt.subplot(122)
 plt.plot(History.history['accuracy'])
 plt.plot(History.history['val_accuracy'])
@@ -199,12 +210,15 @@ plt.legend(['train', 'test'])
 plt.savefig('Xception.png')
 plt.show()
 #saving the  model to be used later
+
+** 모델 저장 **
 fer_json = model.to_json()
 with open("mymodel.json", "w") as json_file:
     json_file.write(fer_json)
 model.save_weights("model_weight.h5")
 print("Saved model to disk")
 
+** 최종 모델 저장 **
 joblib.dump(History, 'history.h5')
 def confusion_matrix_img(y_pred, y_true, savename):
     cm = confusion_matrix(y_true, y_pred)
@@ -235,6 +249,7 @@ predy=[]
 x = x_test
 y = y_test
 
+** 결과 분석 **
 yhat= model.predict(x)
 yh = yhat.tolist()
 yt = y.tolist()
@@ -258,10 +273,11 @@ print("Accuracy on test set :"+str(acc)+"%")
 import itertools
 import numpy as np
 import matplotlib.pyplot as plt
+
+** 혼동 행렬 **
 from sklearn.metrics import confusion_matrix
 
 
 confusion_matrix_img(truey, predy, savename='Confusion Matrix')
 
 
-https://www.kaggle.com/code/bunnyyy/xceptionnet
