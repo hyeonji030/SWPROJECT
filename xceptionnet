@@ -1,0 +1,47 @@
+import warnings
+
+#ignore Warnings
+
+warnings.filterwarnings('always')     
+warnings.filterwarnings('ignore')     
+
+
+#Manipulasi data
+import numpy as np
+import pandas as pd
+
+#Visualisasi Data
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+%matplotlib inline
+
+#Model Selection
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score
+from sklearn.preprocessing import LabelEncoder
+
+#preprocess
+from keras.preprocessing.image import ImageDataGenerator
+
+#dl libraries 
+from keras import backend as K
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.optimizers import Adam, SGD, Adagrad, Adadelta, RMSprop
+from keras.utils import to_categorical
+
+#specially for CNN
+from keras.layers import Dropout, Flatten, Activation
+from keras.layers import Conv2D, MaxPool2D, MaxPooling2D, BatchNormalization
+
+import tensorflow as tf
+import random as rn
+
+#soepecially for manipulating Zipped image and getting numpy arrays
+import cv2
+import os
+from PIL import Image
+
+#save train data and model
+import joblib
